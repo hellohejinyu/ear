@@ -1,0 +1,13 @@
+{
+  "name": "ear",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "hekaijun <hekaijun@xiaoheiban.cn>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^10.1.6"
+  }
+}
