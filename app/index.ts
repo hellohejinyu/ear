@@ -3,7 +3,7 @@ import path from 'path'
 
 app.on('ready', function () {
   const window = new BrowserWindow({ webPreferences: { preload: path.resolve(__dirname, 'preload.js') } })
-  window.loadFile(path.resolve(__dirname, '..', '..', 'src', 'index.html'))
+  window.loadFile(path.resolve(__dirname, '..', '..', 'output', 'renderer', 'index.html'))
   if (process.env.NODE_ENV === 'development') {
     window.webContents.openDevTools()
   }
