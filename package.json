@@ -1,13 +1,20 @@
 {
   "name": "ear",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "output/main/index.js",
   "author": "hekaijun <hekaijun@xiaoheiban.cn>",
   "license": "MIT",
   "scripts": {
+    "main": "output/main/index.js",
+    "dev:main": "NODE_ENV=development webpack --config ./build/webpack.config.main.js --watch",
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^10.1.6"
+    "awesome-typescript-loader": "^5.2.1",
+    "electron": "^10.x",
+    "typescript": "^4.1.2",
+    "webpack": "^4.x",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^5.4.0"
   }
 }

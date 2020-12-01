@@ -1,0 +1,23 @@
+// https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "app/*": ["app/*"],
+      "src/*": ["src/*"],
+    },
+  },
+  "include": ["app/**/*"],
+  "exclude": ["node_modules", "packages", "public", "mock"]
+}
