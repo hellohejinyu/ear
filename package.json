@@ -6,11 +6,15 @@
   "license": "MIT",
   "scripts": {
     "main": "output/main/index.js",
-    "dev:main": "NODE_ENV=development webpack --config ./build/webpack.config.main.js --watch",
+    "dev:main": "webpack --config ./build/webpack.config.main.js --watch",
+    "dev:preload": "webpack --config ./build/webpack.config.preload.js --watch",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run dev:main\" \"npm run dev:preload\"",
     "start": "electron ."
   },
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",
+    "concurrently": "^5.3.0",
+    "cross-env": "^7.0.2",
     "electron": "^10.x",
     "typescript": "^4.1.2",
     "webpack": "^4.x",
