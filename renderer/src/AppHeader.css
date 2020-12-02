@@ -1,0 +1,51 @@
+.header {
+  background-color: rgb(232, 234, 233);
+  /* 让鼠标放在 Header 上可以拖动窗口 */
+  -webkit-app-region: drag;
+  height: 70px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.header-left-buttons {
+  padding-top: 22px;
+  display: flex;
+}
+
+.icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  margin: 0px 16px;
+}
+
+.icon-button.active .icon,
+.icon-button.active .text {
+  color: #1890ff;
+}
+
+.icon-button .icon {
+  font-size: 24px;
+  color: rgb(80, 80, 80);
+  margin-bottom: 6px;
+}
+.icon-button .text {
+  font-size: 12px;
+  color: rgb(80, 80, 80);
+}
+
+.header-tabs {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-form-item-label {
+  text-align: left;
+}
