@@ -8,7 +8,8 @@
     "main": "output/main/index.js",
     "dev:main": "webpack --config ./build/webpack.config.main.js --watch",
     "dev:preload": "webpack --config ./build/webpack.config.preload.js --watch",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run dev:main\" \"npm run dev:preload\"",
+    "dev:renderer": "cd renderer && npm run start",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run dev:main\" \"npm run dev:preload\" \"npm run dev:renderer\"",
     "start": "electron ."
   },
   "devDependencies": {
