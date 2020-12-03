@@ -1,6 +1,29 @@
 import { shell, app, BrowserWindow, ipcMain, dialog, session } from 'electron'
 import path from 'path'
 import fs from 'fs'
+import crypto from 'crypto'
+
+const key = '123456789abcdefg'
+const iv = 'abcdefg123456789'
+
+function encrypt(data: string) {
+  let decipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+  return decipher.update(data, 'binary', 'base64') + decipher.final('base64');
+}
+
+function decrypt(crypted: string) {
+  crypted = Buffer.from(crypted, 'base64').toString('binary');
+  let decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
+  return decipher.update(crypted, 'binary', 'utf8') + decipher.final('utf8');
+}
+
+const download = (originUrl: string) => {
+  let url: string = originUrl
+  if (url.startsWith('ear://')) {
+    url = decrypt(url.slice(6))
+  }
+  window.webContents.downloadURL(url)
+}
 
 let window: BrowserWindow
 const agreement = 'ear' // 自定义协议名
@@ -23,12 +46,8 @@ function watchProtocol() {
   app.on('open-url', (event, url) => {
     const isProtocol = AGREEMENT_REGEXP.test(url)
     if (isProtocol) {
+      download(url);
       console.log('获取协议链接, 根据参数做各种事情')
-      dialog.showMessageBox({
-        type: 'info',
-        message: 'Mac protocol 自定义协议打开',
-        detail: `自定义协议链接：${url}`,
-      })
     }
   })
   // windows系统下唤醒应用会激活second-instance事件 它在ready执行之后才能被监听
@@ -123,6 +142,6 @@ app.on('will-finish-launching', () => {
     }
   })
   ipcMain.handle('downloadFile', (e, data) => {
-    window.webContents.downloadURL(data.url)
+    download(data.url)
   })
 })
