@@ -23,15 +23,15 @@ const IconButton = ({ active, icon, text, activeIcon, onClick }) => {
   )
 }
 
-const AppHeader = ({ onActiveTabChange }) => {
-  const [activeTab, setActiveTab] = useState('downloading')
+const AppHeader = ({ onActiveTabChange, activeTab }) => {
   const [downloadModalVisible, setDownloadModalVisible] = useState(false)
-  useEffect(() => {
-    onActiveTabChange(activeTab)
-  }, [activeTab])
   return (
     <Header className='header'>
-      <DownloadModal visible={downloadModalVisible} onCancel={() => { setDownloadModalVisible(false) }} />
+      <DownloadModal
+        visible={downloadModalVisible}
+        onCancel={() => { setDownloadModalVisible(false) }}
+        onOk={() => { setDownloadModalVisible(false) }}
+      />
       <div className='header-left-buttons'>
         <Button
           icon={<PlusOutlined />}
@@ -49,7 +49,7 @@ const AppHeader = ({ onActiveTabChange }) => {
           text='正在下载'
           active={activeTab === 'downloading'}
           onClick={() => {
-            setActiveTab('downloading')
+            onActiveTabChange('downloading')
           }}
         />
         <IconButton
@@ -58,7 +58,7 @@ const AppHeader = ({ onActiveTabChange }) => {
           active={activeTab === 'finish'}
           text='已完成'
           onClick={() => {
-            setActiveTab('finish')
+            onActiveTabChange('finish')
           }}
         />
       </div>

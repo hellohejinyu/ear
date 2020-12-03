@@ -13,3 +13,31 @@
 .empty .ant-empty-description {
   color: #aaa;
 }
+
+.content ul {
+  list-style: none;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.content li {
+  background-color: #eee;
+  height: 80px;
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.content li .icon {
+  margin-left: 28px;
+  margin-right: 28px;
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+}
+
+.content li .right {
+  flex-grow: 1;
+  margin-right: 32px;
+  position: relative;
+}

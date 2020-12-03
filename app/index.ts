@@ -1,10 +1,21 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+import { shell, app, BrowserWindow, ipcMain, dialog, session } from 'electron'
 import path from 'path'
+import fs from 'fs'
 
+let window: BrowserWindow
 const agreement = 'ear' // 自定义协议名
 
 // 验证是否为自定义协议的链接
 const AGREEMENT_REGEXP = new RegExp(`^${agreement}://`)
+
+const getFileIcon = async (path: string): Promise<string> => {
+  if (!path) return '';
+  const icon = await app.getFileIcon(path, {
+    size: 'normal',
+  })
+
+  return icon.toDataURL()
+}
 
 // 监听自定义协议唤起
 function watchProtocol() {
@@ -58,7 +69,7 @@ function setCustomProtocol() {
 
 
 app.on('ready', function () {
-  const window = new BrowserWindow({
+  window = new BrowserWindow({
     titleBarStyle: 'hidden',
     webPreferences: {
       preload: path.resolve(__dirname, 'preload.js')
@@ -70,13 +81,48 @@ app.on('ready', function () {
   }
   setCustomProtocol()
   watchProtocol()
+  session.defaultSession.on('will-download', (e, item, webContents) => {
+    item.on('updated', async (e, state) => {
+      webContents.send('itemUpdated', {
+        state,
+        item: {
+          filename: item.getFilename(),
+          totalBytes: item.getTotalBytes(),
+          receivedBytes: item.getReceivedBytes(),
+          savePath: item.getSavePath(),
+          icon: await getFileIcon(item.getSavePath()),
+        },
+      })
+    })
+    item.on('done', async (e, state) => {
+      webContents.send('itemDone', {
+        state,
+        item: {
+          filename: item.getFilename(),
+          totalBytes: item.getTotalBytes(),
+          receivedBytes: item.getReceivedBytes(),
+          savePath: item.getSavePath(),
+          icon: await getFileIcon(item.getSavePath()),
+        },
+      })
+    })
+  })
 })
 
-app.on('will-finish-launching', function () {
+app.on('will-finish-launching', () => {
+  ipcMain.handle('openFileFolder', (e, path: string) => {
+    if (!fs.existsSync(path)) return false
+    shell.showItemInFolder(path)
+    return true
+  })
+
   ipcMain.handle('app/get_basic_info', function handleAppGetBasicInfo() {
     return {
       version: app.getVersion(),
       name: app.name,
     }
+  })
+  ipcMain.handle('downloadFile', (e, data) => {
+    window.webContents.downloadURL(data.url)
   })
 })

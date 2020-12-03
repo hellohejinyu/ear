@@ -1,12 +1,9 @@
 import { Form, Input, Modal } from 'antd'
 import React, { useState } from 'react'
-import { FolderOpenOutlined } from '@ant-design/icons'
 
-const DownloadModal = ({ visible, onCancel }) => {
+const DownloadModal = ({ visible, onCancel, onOk }) => {
   const [formData, setFormData] = useState({
-    url: '',
-    fileName: '',
-    path: '',
+    url: 'https://pm.myapp.com/invc/xfspeed/qqpcmgr/module_update/Lemon_3.3.0.dmg',
   })
   // 光标聚焦时，选中内容
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -19,37 +16,26 @@ const DownloadModal = ({ visible, onCancel }) => {
       mask={false}
       maskClosable={false}
       title='新建下载任务'
-      okText='下载'
+      okText='确定'
       cancelText='取消'
       closable={false}
+      onOk={() => {
+        window.JSBridge.downloadFile(formData)
+        onOk()
+      }}
     >
-      <Form labelCol={{ span: 4 }} size='small'>
-        <Form.Item label='下载链接：'>
+      <Form>
+        <Form.Item>
           <Input
             value={formData?.url}
+            placeholder='下载链接，支持 ear:// http(s):// 协议'
             onChange={e => {
-              ///
+              setFormData({
+                ...formData,
+                url: e.target.value
+              })
             }}
             onFocus={handleFocus}
-          />
-        </Form.Item>
-        <Form.Item label='文件名称：'>
-          <Input
-            value={formData?.fileName}
-            onChange={e => {
-              ///
-            }}
-            onFocus={handleFocus}
-          />
-        </Form.Item>
-        <Form.Item label='下载位置：'>
-          <Input
-            readOnly
-            value={formData?.path}
-            addonAfter={<FolderOpenOutlined onClick={() => {}} />}
-            onClick={() => {
-              //
-            }}
           />
         </Form.Item>
       </Form>
