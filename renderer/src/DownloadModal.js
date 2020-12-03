@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 const DownloadModal = ({ visible, onCancel, onOk }) => {
   const [formData, setFormData] = useState({
-    url: 'https://pm.myapp.com/invc/xfspeed/qqpcmgr/module_update/Lemon_3.3.0.dmg',
+    url: '',
   })
   // 光标聚焦时，选中内容
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
